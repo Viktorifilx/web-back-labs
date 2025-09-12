@@ -140,3 +140,29 @@ def info():
     return redirect("/lab1/author")
 
 
+@app.route("/bad_request")
+def bad_request():
+    return "400 Bad Request — Неверный запрос", 400
+
+@app.route("/unauthorized")
+def unauthorized():
+    return "401 Unauthorized — Требуется авторизация", 401
+
+@app.route("/payment_required")
+def payment_required():
+    return "402 Payment Required — Необходима оплата", 402
+
+@app.route("/forbidden")
+def forbidden():
+    return "403 Forbidden — Доступ запрещён", 403
+
+@app.route("/method_not_allowed")
+def method_not_allowed():
+    return "405 Method Not Allowed — Метод не разрешён", 405
+
+@app.route("/im_a_teapot")
+def im_a_teapot():
+    return "418 I'm a teapot — Я чайник", 418
+
+
+
