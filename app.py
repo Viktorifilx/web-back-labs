@@ -25,7 +25,7 @@ def index():
         </header>
         <nav>
             <ul>
-                <li><a href="/lab1/web">Первая лабораторная</a></li>
+                <li><a href="/lab1">Первая лабораторная</a></li>
             </ul>
         </nav>
         <footer>
@@ -47,6 +47,25 @@ def lab1():
         Относится к категории так называемых микрофреймворков — минималистичных 
         каркасов веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
         <p><a href="/">На главную</a></p>
+
+        <h2>Список роутов</h2>
+        <ul>
+            <li><a href="/lab1/web">/lab1/web</a></li>
+            <li><a href="/lab1/author">/lab1/author</a></li>
+            <li><a href="/lab1/image">/lab1/image</a></li>
+            <li><a href="/lab1/counter">/lab1/counter</a></li>
+            <li><a href="/lab1/reset_counter">/lab1/reset_counter</a></li>
+            <li><a href="/lab1/info">/lab1/info</a></li>
+            <li><a href="/bad_request">/bad_request (400)</a></li>
+            <li><a href="/unauthorized">/unauthorized (401)</a></li>
+            <li><a href="/payment_required">/payment_required (402)</a></li>
+            <li><a href="/forbidden">/forbidden (403)</a></li>
+            <li><a href="/method_not_allowed">/method_not_allowed (405)</a></li>
+            <li><a href="/im_a_teapot">/im_a_teapot (418)</a></li>
+            <li><a href="/not_found">/not_found (404)</a></li>
+            <li><a href="/cause_error">/cause_error (500)</a></li>
+        </ul>
+
     </body>
 </html>"""
 
