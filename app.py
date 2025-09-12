@@ -209,3 +209,47 @@ def not_found():
     </body>
 </html>""", 404
 
+
+@app.route("/cause_error")
+def cause_error():
+    x = 1 / 0
+    return "Это никогда не выполнится"
+
+@app.errorhandler(500)
+def internal_error(err):
+    return """<!doctype html>
+<html>
+    <head>
+        <title>500 Внутренняя ошибка сервера</title>
+        <style>
+            body { 
+                font-family: Arial, sans-serif; 
+                text-align: center; 
+                background-color: #ffe6e6; 
+                color: #333;
+            }
+            h1 { 
+                color: #e74c3c; 
+                margin-top: 50px;
+            }
+            p { 
+                font-size: 18px; 
+            }
+            a {
+                display: inline-block;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #2980b9;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>500 — Внутренняя ошибка сервера</h1>
+        <p>Произошла ошибка на сервере. Попробуйте снова позднее.</p>
+        <p><a href="/">Вернуться на главную</a></p>
+    </body>
+</html>""", 500
