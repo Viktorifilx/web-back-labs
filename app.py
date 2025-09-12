@@ -165,4 +165,47 @@ def im_a_teapot():
     return "418 I'm a teapot — Я чайник", 418
 
 
+@app.route("/not_found")
+def not_found():
+    return """<!doctype html>
+<html>
+    <head>
+        <title>404 Not Found — Страница не найдена</title>
+        <style>
+            body { 
+                font-family: Arial, sans-serif; 
+                text-align: center; 
+                background-color: #f8f8f8; 
+                color: #333;
+            }
+            h1 { 
+                color: #e74c3c; 
+                margin-top: 50px;
+            }
+            p { 
+                font-size: 18px; 
+            }
+            img { 
+                width: 300px; 
+                margin-top: 20px; 
+            }
+            a {
+                display: inline-block;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #2980b9;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>404 Not Found — Ой! Что-то пошло не так</h1>
+        <p>К сожалению, такой страницы не существует.</p>
+        <img src='""" + url_for("static", filename="404.png") + """' alt="404">
+        <p><a href="/">Вернуться на главную</a></p>
+    </body>
+</html>""", 404
 
