@@ -7,6 +7,35 @@ def not_found(err):
     return "нет такой страницы", 404
 
 @app.route("/")
+@app.route("/index")
+def index():
+    name = "Филатова Виктория Михайловна"
+    group = "ФБИ-34"
+    course = "3 курс"
+    year = "2025"
+
+    return """<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>НГТУ, ФБ, Лабораторные работы</title>
+    </head>
+    <body>
+        <header>
+            <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="/lab1/web">Первая лабораторная</a></li>
+            </ul>
+        </nav>
+        <footer>
+            <p>""" + name + """, """ + group + """, """ + course + """, """ + year + """</p>
+        </footer>
+    </body>
+</html>"""
+
+
 @app.route("/lab1/web")
 def web ():
     return """<!doctype html>
