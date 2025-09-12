@@ -184,8 +184,29 @@ def im_a_teapot():
     return "418 I'm a teapot — Я чайник", 418
 
 
-@app.route("/not_found")
-def not_found():
+log_404 = []  
+
+@app.errorhandler(404)
+def not_found(err):
+    import datetime
+    client_ip = request.remote_addr
+    url = request.url
+    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    log_404.append((time, client_ip, url))
+
+    log_html = """
+    <table border="1" cellpadding="5" cellspacing="0" style="margin:20px auto; border-collapse:collapse;">
+        <tr>
+            <th>Дата и время</th>
+            <th>IP-адрес</th>
+            <th>Запрошенный адрес</th>
+        </tr>
+    """
+    for entry in log_404:
+        log_html += "<tr><td>" + entry[0] + "</td><td>" + entry[1] + "</td><td>" + entry[2] + "</td></tr>"
+    log_html += "</table>"
+
     return """<!doctype html>
 <html>
     <head>
@@ -199,14 +220,14 @@ def not_found():
             }
             h1 { 
                 color: #e74c3c; 
-                margin-top: 50px;
+                margin-top: 30px;
             }
             p { 
                 font-size: 18px; 
             }
             img { 
                 width: 300px; 
-                margin-top: 20px; 
+                margin: 20px 0;
             }
             a {
                 display: inline-block;
@@ -218,15 +239,28 @@ def not_found():
             a:hover {
                 text-decoration: underline;
             }
+            table {
+                width: 80%;
+                border: 1px solid #ccc;
+            }
+            th {
+                background-color: #eee;
+            }
         </style>
     </head>
     <body>
-        <h1>404 Not Found — Ой! Что-то пошло не так</h1>
-        <p>К сожалению, такой страницы не существует.</p>
-        <img src='""" + url_for("static", filename="404.png") + """' alt="404">
+        <h1>404 — Ой! Такой страницы нет</h1>
+        <p>IP-адрес: """ + client_ip + """</p>
+        <p>Дата и время: """ + time + """</p>
+        <p>Вы пытались открыть: """ + url + """</p>
         <p><a href="/">Вернуться на главную</a></p>
+
+        <h2>Журнал обращений</h2>
+        """ + log_html + """
+        <img src='""" + url_for("static", filename="404.png") + """' alt="404">
     </body>
 </html>""", 404
+
 
 
 @app.route("/cause_error")
