@@ -306,3 +306,12 @@ def internal_error(err):
         <p><a href="/">Вернуться на главную</a></p>
     </body>
 </html>""", 500
+
+
+@app.route ('/lab2/a')
+def a():
+    return 'ok'
+
+@app.route ('/lab2/a/')
+def a():
+    return 'ok'
