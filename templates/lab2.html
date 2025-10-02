@@ -5,11 +5,22 @@
 
 {# основной контент: #}
 {% block main %}
-  <h1>Шаблоны</h1>
-  <div>Тема лабораторной – шаблоны. Список сделанных страниц:</div>
+  <h1>Ссылки Лабораторная работа 2templates</h1>
   <ol>
-    <li>
-      <a href="/lab2/example">example</a>
-    </li>
+    <li><a href="/lab2/example">/lab2/example</a> — примеры выражений и условные блоки</li>
+    <li><a href="/lab2/filters">/lab2/filters</a> — фильтры Jinja</li>
+
+    <li><a href="/lab2/calc/">/lab2/calc/</a> — расчёт по умолчанию (редирект на 1/1)</li>
+    <li><a href="/lab2/calc/3/4">/lab2/calc/3/4</a> — пример с параметрами</li>
+    <li><a href="/lab2/calc/10">/lab2/calc/10</a> — редирект с одним параметром на 10/1</li>
+
+    <li><a href="/lab2/books">/lab2/books</a> — список книг (шаблон)</li>
+    <li><a href="/lab2/gallery">/lab2/gallery</a> — галерея (20 объектов)</li>
+
+    <li><a href="/lab2/flowers">/lab2/flowers</a> — все цветы и количество</li>
+    <li><a href="/lab2/flowers/0">/lab2/flowers/0</a> — карточка цветка по id</li>
+    <li><a href="/lab2/add_flower/роза">/lab2/add_flower/роза</a> — добавить цветок (пример)</li>
+    <li><a href="/lab2/flowers/clear">/lab2/flowers/clear</a> — очистить список</li>
   </ol>
 {% endblock %}
+
