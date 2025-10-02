@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block lab %}Галерея{% endblock %}
+
+{% block main %}
+  <h1> Ягоды ({{ objects|length }})</h1>
+
+  <div style="display:flex; flex-wrap:wrap; gap:16px;">
+    {% for obj in objects %}
+      <div style="width:220px; border:1px solid #ddd; border-radius:8px; padding:10px;">
+        <img src="{{ url_for('static', filename=obj.img) }}" alt="{{ obj.name }}"
+             style="width:100%; height:140px; object-fit:cover; border-radius:6px;">
+        <h3 style="margin:8px 0 4px;">{{ obj.name }}</h3>
+        <div style="font-size:14px; color:#444;">{{ obj.desc }}</div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
