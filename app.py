@@ -438,3 +438,21 @@ def calc_default():
 def calc_redirect_to_b1(a):
     return redirect('/lab2/calc/' + str(a) + '/1')
 
+
+books = [
+    {"author": "Достоевский Ф.М.", "title": "Преступление и наказание", "genre": "Роман", "pages": 672},
+    {"author": "Толстой Л.Н.", "title": "Война и мир", "genre": "Исторический роман", "pages": 1225},
+    {"author": "Булгаков М.А.", "title": "Мастер и Маргарита", "genre": "Фэнтези", "pages": 480},
+    {"author": "Пушкин А.С.", "title": "Евгений Онегин", "genre": "Поэма", "pages": 224},
+    {"author": "Лермонтов М.Ю.", "title": "Герой нашего времени", "genre": "Роман", "pages": 320},
+    {"author": "Оруэлл Дж.", "title": "1984", "genre": "Антиутопия", "pages": 352},
+    {"author": "Киз Д.", "title": "Цветы для Элджернона", "genre": "Научная фантастика", "pages": 352},
+    {"author": "Толкин Дж.Р.Р.", "title": "Хоббит", "genre": "Фэнтези", "pages": 310},
+    {"author": "Роулинг Дж.К.", "title": "Гарри Поттер и философский камень", "genre": "Фэнтези", "pages": 384},
+    {"author": "Верн Ж.", "title": "20 000 лье под водой", "genre": "Приключения", "pages": 416}
+]
+
+@app.route('/lab2/books')
+def books_view():
+    return render_template('books.html', books=books)
+
