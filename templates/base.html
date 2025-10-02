@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Филатова Виктория. {% block lab %}{% endblock %} </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <header>
+        WEB-программирование, часть 2. {{ self.lab() }}
+        <span style="margin-left:12px;">
+            <a href="/">на главную</a>
+        </span>
+    </header>
+    
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer>
+        &copy; Филатова Виктория, ФБИ-34, 3 курс, 2025
+    </footer>
+</body>
+</html>
