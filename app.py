@@ -319,27 +319,75 @@ def a2():
 
 flower_list = ['роза','тюльпан','незабудка','ромашка']
 
-@app.route ('/lab2/flowers/<int:flower_id>')
-def flowers(flower_id):
-    if flower_id >= len (flower_list):
-        abort (404)
-    else:
-        return "цветок:" + flower_list[flower_id]
+@app.route('/lab2/add_flower/')
+def add_flower_missing():
+    return "вы не задали имя цветка", 400
 
-@app.route ('/lab2/flowers/<name>')
-def add_flowers(name):
+
+@app.route('/lab2/add_flower/<name>')
+def add_flower(name):
+    name = name.strip()
+    if name == "":
+        return "вы не задали имя цветка", 400
     flower_list.append(name)
     return f'''
 <!doctype html>
 <html>
-    <body>
+  <body>
     <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)} </p>
-    <p>Полный список: {flower_list} </p>
-    </body>
+    <p>Название нового цветка: {name}</p>
+    <p>Всего цветов: {len(flower_list)}</p>
+    <p><a href="/lab2/flowers">Перейти к списку всех цветов</a></p>
+  </body>
 </html>
 '''
+
+@app.route('/lab2/flowers')
+def all_flowers():
+    return '''
+<!doctype html>
+<html>
+  <body>
+    <h1>Все цветы</h1>
+    <p>Количество: ''' + str(len(flower_list)) + '''</p>
+    <p>Полный список: ''' + ', '.join(flower_list) + '''</p>
+  </body>
+</html>
+'''
+
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flower_by_id(flower_id):
+    if flower_id < 0 or flower_id >= len(flower_list):
+        abort(404)
+    name = flower_list[flower_id]
+    return '''
+<!doctype html>
+<html>
+  <body>
+    <h1>Цветок №''' + str(flower_id) + '''</h1>
+    <p>Название цветка: ''' + name + '''</p>
+    <p><a href="/lab2/flowers"> Вернуться к списку всех цветов</a></p>
+  </body>
+</html>
+'''
+
+
+@app.route('/lab2/flowers/clear')
+def clear_flowers():
+    flower_list.clear()
+    return '''
+<!doctype html>
+<html>
+  <body>
+    <h1>Список очищен</h1>
+    <p>Все цветы удалены.</p>
+    <p><a href="/lab2/flowers">Перейти к списку всех цветов</a></p>
+  </body>
+</html>
+'''
+
+
 
 @app.route ('/lab2/example')
 def example():
