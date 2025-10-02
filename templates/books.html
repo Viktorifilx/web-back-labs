@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block lab %}Книги{% endblock %}
+
+{% block main %}
+  <h1>Список книг</h1>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>№</th>
+      <th>Автор</th>
+      <th>Название</th>
+      <th>Жанр</th>
+      <th>Страниц</th>
+    </tr>
+    {% for book in books %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.title }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.pages }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
