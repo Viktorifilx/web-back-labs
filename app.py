@@ -412,3 +412,29 @@ def lab2():
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase=phrase)
+
+
+@app.route('/lab2/calc/<int:a>/<int:b>')
+def calc(a, b):
+    return '''
+<!doctype html>
+<html>
+  <body>
+    <h1>Расчёт с параметрами:</h1>
+    <p>''' + str(a) + ' + ' + str(b) + ' = ' + str(a + b) + '''</p>
+    <p>''' + str(a) + ' - ' + str(b) + ' = ' + str(a - b) + '''</p>
+    <p>''' + str(a) + ' * ' + str(b) + ' = ' + str(a * b) + '''</p>
+    <p>''' + str(a) + ' / ' + str(b) + ' = ' + str(round(a / b, 2)) + '''</p>
+    <p>''' + str(a) + '^' + str(b) + ' = ' + str(a ** b) + '''</p>
+  </body>
+</html>
+'''
+
+@app.route('/lab2/calc/')
+def calc_default():
+    return redirect('/lab2/calc/1/1')
+
+@app.route('/lab2/calc/<int:a>')
+def calc_redirect_to_b1(a):
+    return redirect('/lab2/calc/' + str(a) + '/1')
+
