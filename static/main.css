@@ -35,3 +35,10 @@ body {
             font-size: 14px;
             margin-top: 40px;
         }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 4px;
+            display: block;
+        }
