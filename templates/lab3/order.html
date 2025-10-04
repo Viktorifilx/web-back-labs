@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    <h1>Заказ напитка</h1>
+
+    <div class="card order-card">
+        <form action="/lab3/pay" method="get">
+
+            <div class="form-line">
+                <div class="line-title">Напиток:</div>
+                <label><input type="radio" name="drink" value="cofee" checked> кофе</label>
+                <label><input type="radio" name="drink" value="black-tea"> чёрный чай</label>
+                <label><input type="radio" name="drink" value="green-tea"> зелёный чай</label>
+            </div>
+
+            <div class="form-line">
+                <div class="line-title">Добавки:</div>
+                <label><input type="checkbox" name="milk"> молоко</label>
+                <label><input type="checkbox" name="sugar"> сахар</label>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Стоимость</div>
+                <ul>
+                    <li>Кофе — <b>120 ₽</b></li>
+                    <li>Чёрный чай — <b>80 ₽</b></li>
+                    <li>Зелёный чай — <b>70 ₽</b></li>
+                    <li>Добавки: молоко <b>+30 ₽</b>, сахар <b>+10 ₽</b></li>
+                </ul>
+            </div>
+
+            <div class="actions-row">
+                <button type="submit">Заказать</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    <div class="card thanks-card">
+    <div class="thanks-hero">
+        <img src="/static/thanks.png" alt="Спасибо за заказ" class="thanks-img">
+    <div>
+        <h1>Спасибо за заказ!</h1>
+        <p>Ваш заказ успешно оплачен на сумму <span class="price-accent">{{ price }} ₽</span>.</p>
+        <p>Мы уже начинаем готовить ваш напиток. Ожидайте доставку.</p>
+      </div>
+    </div>
+
+    <div class="thanks-actions">
+      <a href="/lab3/order">Сделать новый заказ</a>
+    </div>
+  </div>
+{% endblock %}
