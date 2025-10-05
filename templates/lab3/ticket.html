@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<h1>Железнодорожный билет</h1>
+
+<div class="card order-card">
+  <form action="/lab3/ticket" method="get">
+
+    <div class="form-line">
+      <label for="fio">ФИО пассажира:</label>
+      <input id="fio" type="text" name="fio" value="{{ data.get('fio','') }}">
+      <span class="error">{{ errors.get('fio') }}</span>
+    </div>
+
+    <div class="form-line">
+      <div class="line-title">Полка:</div>
+      <label><input type="radio" name="polka" value="нижняя"
+        {% if data.get('polka') == 'нижняя' %}checked{% endif %}> нижняя</label>
+      <label><input type="radio" name="polka" value="верхняя"
+        {% if data.get('polka') == 'верхняя' %}checked{% endif %}> верхняя</label>
+      <label><input type="radio" name="polka" value="верхняя боковая"
+        {% if data.get('polka') == 'верхняя боковая' %}checked{% endif %}> верхняя боковая</label>
+      <label><input type="radio" name="polka" value="нижняя боковая"
+        {% if data.get('polka') == 'нижняя боковая' %}checked{% endif %}> нижняя боковая</label>
+      <span class="error">{{ errors.get('polka') }}</span>
+    </div>
+
+    <div class="form-line">
+      <div class="line-title">Опции:</div>
+      <label><input type="checkbox" name="linen" {% if data.get('linen') %}checked{% endif %}> с бельём</label>
+      <label><input type="checkbox" name="baggage" {% if data.get('baggage') %}checked{% endif %}> с багажом</label>
+      <label><input type="checkbox" name="insurance" {% if data.get('insurance') %}checked{% endif %}> страховка</label>
+    </div>
+
+    <div class="form-line">
+      <label for="age">Возраст:</label>
+      <input id="age" type="number" name="age" min="1" max="120" value="{{ data.get('age','') }}">
+      <span class="error">{{ errors.get('age') }}</span>
+    </div>
+
+    <div class="form-line">
+      <label for="from_city">Пункт выезда:</label>
+      <input id="from_city" type="text" name="from_city" value="{{ data.get('from_city','') }}">
+      <span class="error">{{ errors.get('from_city') }}</span>
+    </div>
+
+    <div class="form-line">
+      <label for="to_city">Пункт назначения:</label>
+      <input id="to_city" type="text" name="to_city" value="{{ data.get('to_city','') }}">
+      <span class="error">{{ errors.get('to_city') }}</span>
+    </div>
+
+    <div class="form-line">
+      <label for="date">Дата поездки:</label>
+      <input id="date" type="date" name="date" value="{{ data.get('date','') }}">
+      <span class="error">{{ errors.get('date') }}</span>
+    </div>
+
+    <div class="form-line">
+      <button type="submit">Рассчитать</button>
+    </div>
+
+    <div class="legend" style="margin-top:10px;">
+      <div class="legend-title">Правила цены</div>
+      <ul>
+        <li>Взрослый билет — <b>1000 ₽</b>, детский — <b>700 ₽</b>.</li>
+        <li>Нижняя или нижняя боковая полка — <b>+100 ₽</b>.</li>
+        <li>Бельё — <b>+75 ₽</b>.</li>
+        <li>Багаж — <b>+250 ₽</b>.</li>
+        <li>Страховка — <b>+150 ₽</b>.</li>
+      </ul>
+    </div>
+  </form>
+</div>
+{% endblock %}

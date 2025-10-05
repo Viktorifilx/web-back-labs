@@ -109,3 +109,67 @@ def settings():
     bold = request.cookies.get('bold')
     return render_template('lab3/settings.html', color=color, bg_color=bg_color)
 
+
+@lab3.route('/lab3/ticket')
+def ticket():
+
+    if not request.args:
+        return render_template('lab3/ticket.html', errors={}, data={})
+
+    errors = {}
+
+    fio       = (request.args.get('fio') or '').strip()
+    polka     = request.args.get('polka')  
+    linen     = request.args.get('linen') == 'on'
+    baggage   = request.args.get('baggage') == 'on'
+    insurance = request.args.get('insurance') == 'on'
+    age_raw   = (request.args.get('age') or '').strip()
+    from_city = (request.args.get('from_city') or '').strip()
+    to_city   = (request.args.get('to_city') or '').strip()
+    date      = request.args.get('date') or ''
+
+    if not fio:
+        errors['fio'] = 'Укажите ФИО'
+    if not polka:
+        errors['polka'] = 'Выберите полку'
+    try:
+        age = int(age_raw)
+        if age < 1 or age > 120:
+            errors['age'] = 'Возраст от 1 до 120'
+    except ValueError:
+        errors['age'] = 'Возраст задайте числом'
+        age = 0
+
+    if not from_city:
+        errors['from_city'] = 'Укажите пункт выезда'
+    if not to_city:
+        errors['to_city'] = 'Укажите пункт назначения'
+    if not date:
+        errors['date'] = 'Укажите дату поездки'
+
+    data = {
+        'fio': fio, 'polka': polka, 'linen': linen, 'baggage': baggage,
+        'insurance': insurance, 'age': age_raw, 'from_city': from_city,
+        'to_city': to_city, 'date': date
+    }
+
+    if errors:
+        return render_template('lab3/ticket.html', errors=errors, data=data)
+
+    is_child = age < 18
+    price = 700 if is_child else 1000
+    if polka in ('нижняя', 'нижняя боковая'):
+        price += 100
+    if linen:
+        price += 75
+    if baggage:
+        price += 250
+    if insurance:
+        price += 150
+
+    return render_template(
+        'lab3/ticket_result.html',
+        fio=fio, polka=polka, linen=linen, baggage=baggage, insurance=insurance,
+        age=age, from_city=from_city, to_city=to_city, date=date,
+        is_child=is_child, price=price
+    )

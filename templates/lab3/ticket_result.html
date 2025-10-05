@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+<div class="card thanks-card">
+  <h1>Железнодорожный билет</h1>
+
+  <p><b>Пассажир:</b> {{ fio }}</p>
+  <p><b>Возраст:</b> {{ age }}{% if is_child %} — <i>Детский билет</i>{% endif %}</p>
+  <p><b>Маршрут:</b> {{ from_city }} → {{ to_city }}</p>
+  <p><b>Дата поездки:</b> {{ date }}</p>
+  <p><b>Полка:</b> {{ polka }}</p>
+  <p><b>Бельё:</b> {{ 'да' if linen else 'нет' }},
+     <b>Багаж:</b> {{ 'да' if baggage else 'нет' }},
+     <b>Страховка:</b> {{ 'да' if insurance else 'нет' }}</p>
+
+  <p style="font-size:20px; margin-top:8px;">Итого к оплате: <b class="price-accent">{{ price }} ₽</b></p>
+
+  <div class="thanks-actions">
+    <a href="/lab3/ticket">Оформить новый билет</a>
+  </div>
+</div>
+{% endblock %}
