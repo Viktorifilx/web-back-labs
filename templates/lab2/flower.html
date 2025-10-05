@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block lab %}Карточка цветка{% endblock %}
+
+{% block main %}
+  <h1>{{ flower.name }}</h1>
+  <p>Цена: <b>{{ flower.price }}</b> ₽</p>
+
+  <p style="margin-top:16px;">
+    <a href="/lab2/flowers">← ко всем цветам</a>
+    &nbsp;•&nbsp;
+    <a href="/lab2/del_flower/{{ flower_id }}">удалить</a>
+  </p>
+{% endblock %}

@@ -179,3 +179,28 @@ body {
             text-align: center;
         }
         }
+
+        /* Наследуем цвет из body в ключевых местах */
+header, footer { 
+    color: inherit !important;
+}
+header a, footer a {
+    color: inherit !important;
+}
+
+/* Формы/легенды/подписи пусть тоже наследуют */
+.label,
+.line-title,
+.legend,
+.legend * {
+    color: inherit !important;
+}
+
+/* Страница "Спасибо": убираем фиксированные цвета */
+.thanks-container h1,
+.thanks-container p,
+.thanks-container .price,
+.thanks-card p,
+.price-accent {
+    color: inherit !important;
+}

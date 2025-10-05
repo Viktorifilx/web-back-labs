@@ -141,7 +141,7 @@ def not_found(err):
 
         <h2>Журнал обращений</h2>
         """ + log_html + """
-        <img src='""" + url_for("static", filename="404.png") + """' alt="404">
+        <img src='""" + url_for("static", filename="lab1/404.png") + """' alt="404">
     </body>
 </html>""", 404
 

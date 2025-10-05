@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block lab %}Цветы{% endblock %}
+
+{% block main %}
+  <h1>Список цветов</h1>
+
+  {% if flowers %}
+    <ol>
+      {% for f in flowers %}
+        <li>
+          <a href="/lab2/flowers/{{ loop.index0 }}">{{ f.name }}</a> — {{ f.price }} руб.
+          <a href="/lab2/del_flower/{{ loop.index0 }}">удалить</a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>Список пуст.</p>
+  {% endif %}
+
+  <p><a href="/lab2/del_all_flowers">Удалить все цветы</a></p>
+
+  <div style="margin-top: 12px;">
+    Добавить цветок:
+    <input id="fname" type="text" placeholder="название">
+    цена:
+    <input id="fprice" type="number" min="0" step="1" value="0">
+    <a href="#" onclick="
+      var n=document.getElementById('fname').value.trim();
+      var p=document.getElementById('fprice').value.trim();
+      if(!n){alert('введите имя');return false;}
+      if(p===''||isNaN(p)){p=0;}
+      window.location='/lab2/add_flower/'+encodeURIComponent(n)+'/'+parseInt(p,10);
+      return false;">добавить</a>
+  </div>
+{% endblock %}

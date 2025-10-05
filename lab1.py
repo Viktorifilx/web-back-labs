@@ -1,5 +1,8 @@
-from flask import Blueprint, redirect, url_for, render_template
-lab1 = Blueprint ('lab1', __name__)
+from flask import Blueprint, redirect, url_for, request   # добавь request
+import datetime                                           # добавь datetime
+
+lab1 = Blueprint('lab1', __name__)
+
 
 
 @lab1.route("/lab1")
@@ -44,7 +47,7 @@ def web ():
         <html>
            <body>
                 <h1>web-сервер на flask</h1> 
-                <p><a href="/author">Информация об авторе</a></p>
+                <p><a href="/lab1/author">Информация об авторе</a></p>
            </body>
         </html>""", 200, {
             "X-Server": "sample",
@@ -57,22 +60,24 @@ def author():
     name = "Филатова Виктория Михайловна"
     group = "ФБИ-34"
     faculty = "ФБ"
+   
 
     return """<!doctype html>
+
         <html>
             <body>
                 <p>Студент: """ + name + """</p>
                 <p>Группа: """ + group + """</p>
                 <p>Факультет: """ + faculty + """</p>
-                <a href="/web">web</a>
+                <a href="/lab1/web">web</a>
             </body>
         </html>"""
 
 
 @lab1.route("/lab1/image")
 def image():
-    path = url_for("static", filename="oak.jpg")
-    css_path = url_for("static", filename = "lab1.css")
+    path = url_for("static", filename="lab1/oak.jpg")
+    css_path = url_for("static", filename="lab1/lab1.css")
     return '''
 <!doctype html>
 <html>
@@ -121,7 +126,7 @@ def reset_counter():
 <html>
     <body>
         <p>Счётчик очищен</p>
-        <a href="/counter">Назад к счётчику</a>
+        <a href="/lab1/counter">Назад к счётчику</a>
     </body>
 </html>
 '''
