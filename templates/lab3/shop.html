@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+  <h1>Поиск iPhone по цене</h1>
+
+  <div class="card order-card">
+    <form action="/lab3/shop" method="get">
+      <div class="form-line">
+        <div class="line-title">Мин. цена</div>
+        <input type="number" name="min"
+               min="0" step="1"
+               placeholder="{{ min_all }}"
+               value="{{ min_value if min_value is not none }}">
+      </div>
+
+      <div class="form-line">
+        <div class="line-title">Макс. цена</div>
+        <input type="number" name="max"
+               min="0" step="1"
+               placeholder="{{ max_all }}"
+               value="{{ max_value if max_value is not none }}">
+      </div>
+
+      <div class="form-line">
+        <button type="submit" class="btn primary" name="search" value="1">Искать</button>
+        <button type="submit" class="btn" name="reset" value="1" style="margin-left:10px;">Сброс</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card order-card">
+    <div class="legend-title" style="margin-bottom:10px;">Найдено: {{ items|length }}</div>
+
+    {% if items %}
+      <ul style="margin:0; padding-left:18px;">
+        {% for p in items %}
+          <li style="margin:6px 0;">
+            <b>{{ p.name }}</b> — {{ "{:,}".format(p.price).replace(",", " ") }} ₽
+            <span style="color:#6b7280;">(цвет: {{ p.color }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div>По заданному диапазону ничего не найдено.</div>
+    {% endif %}
+  </div>
+{% endblock %}

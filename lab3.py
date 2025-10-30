@@ -173,3 +173,98 @@ def ticket():
         age=age, from_city=from_city, to_city=to_city, date=date,
         is_child=is_child, price=price
     )
+
+
+    # --- каталог айфонов (простая структура) ---
+PRODUCTS = [
+    {"name": "iPhone SE (2022) 64GB",      "price": 39990,  "brand": "Apple", "color": "midnight"},
+    {"name": "iPhone SE (2022) 128GB",     "price": 44990,  "brand": "Apple", "color": "starlight"},
+    {"name": "iPhone 11 64GB",             "price": 49990,  "brand": "Apple", "color": "чёрный"},
+    {"name": "iPhone 12 mini 128GB",       "price": 59990,  "brand": "Apple", "color": "синий"},
+    {"name": "iPhone 12 64GB",             "price": 57990,  "brand": "Apple", "color": "фиолетовый"},
+    {"name": "iPhone 12 128GB",            "price": 64990,  "brand": "Apple", "color": "зелёный"},
+    {"name": "iPhone 13 mini 128GB",       "price": 69990,  "brand": "Apple", "color": "(PRODUCT)RED"},
+    {"name": "iPhone 13 128GB",            "price": 74990,  "brand": "Apple", "color": "синий"},
+    {"name": "iPhone 13 256GB",            "price": 84990,  "brand": "Apple", "color": "розовый"},
+    {"name": "iPhone 13 Pro 128GB",        "price": 89990,  "brand": "Apple", "color": "graphite"},
+    {"name": "iPhone 13 Pro Max 128GB",    "price": 99990,  "brand": "Apple", "color": "silver"},
+    {"name": "iPhone 14 128GB",            "price": 79990,  "brand": "Apple", "color": "фиолетовый"},
+    {"name": "iPhone 14 256GB",            "price": 92990,  "brand": "Apple", "color": "синий"},
+    {"name": "iPhone 14 Plus 128GB",       "price": 89990,  "brand": "Apple", "color": "midnight"},
+    {"name": "iPhone 14 Pro 128GB",        "price": 109990, "brand": "Apple", "color": "space black"},
+    {"name": "iPhone 14 Pro Max 256GB",    "price": 129990, "brand": "Apple", "color": "deep purple"},
+    {"name": "iPhone 15 128GB",            "price": 94990,  "brand": "Apple", "color": "розовый"},
+    {"name": "iPhone 15 256GB",            "price": 104990, "brand": "Apple", "color": "жёлтый"},
+    {"name": "iPhone 15 Plus 128GB",       "price": 104990, "brand": "Apple", "color": "голубой"},
+    {"name": "iPhone 15 Pro 256GB",        "price": 129990, "brand": "Apple", "color": "natural titanium"},
+    {"name": "iPhone 15 Pro 512GB",        "price": 159990, "brand": "Apple", "color": "blue titanium"},
+    {"name": "iPhone 15 Pro Max 256GB",    "price": 149990, "brand": "Apple", "color": "black titanium"},
+]
+
+
+@lab3.route('/lab3/shop')
+def shop():
+    min_all = min(p['price'] for p in PRODUCTS)
+    max_all = max(p['price'] for p in PRODUCTS)
+
+    if 'reset' in request.args:
+        resp = make_response(redirect('/lab3/shop'))
+        resp.delete_cookie('shop_min_price', path='/')
+        resp.delete_cookie('shop_max_price', path='/')
+        return resp
+
+    qmin = request.args.get('min')
+    qmax = request.args.get('max')
+    qmin = None if qmin is None or qmin == '' else qmin
+    qmax = None if qmax is None or qmax == '' else qmax
+
+    if qmin is None:
+        qmin = request.cookies.get('shop_min_price')
+    if qmax is None:
+        qmax = request.cookies.get('shop_max_price')
+
+    try:
+        qmin = int(qmin) if qmin is not None else None
+    except:
+        qmin = None
+    try:
+        qmax = int(qmax) if qmax is not None else None
+    except:
+        qmax = None
+
+    if qmin is not None and qmax is not None and qmin > qmax:
+        qmin, qmax = qmax, qmin
+
+    result = []
+    for p in PRODUCTS:
+        price = p['price']
+        if qmin is not None and price < qmin:
+            continue
+        if qmax is not None and price > qmax:
+            continue
+        result.append(p)
+
+    if 'min' in request.args or 'max' in request.args:
+        resp = make_response(render_template(
+            'lab3/shop.html',
+            min_all=min_all, max_all=max_all,
+            min_value=qmin, max_value=qmax,
+            items=result
+        ))
+        if qmin is not None:
+            resp.set_cookie('shop_min_price', str(qmin), max_age=31536000, path='/')
+        else:
+            resp.delete_cookie('shop_min_price', path='/')
+        if qmax is not None:
+            resp.set_cookie('shop_max_price', str(qmax), max_age=31536000, path='/')
+        else:
+            resp.delete_cookie('shop_max_price', path='/')
+        return resp
+
+    return render_template(
+        'lab3/shop.html',
+        min_all=min_all, max_all=max_all,
+        min_value=qmin, max_value=qmax,
+        items=result
+    )
+

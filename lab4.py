@@ -25,3 +25,88 @@ def div ():
     result = x1/x2
     return render_template('lab4/div.html', x1=x1, x2=x2, result=result)
     
+
+@lab4.route('/lab4/sub-form')
+def sub_form():
+    return render_template('lab4/sub-form.html')
+
+@lab4.route('/lab4/sub', methods = ['POST'])
+def sub():
+    x1 = request.form.get('x1')
+    x2 = request.form.get('x2')
+    if x1 == '' or x2 == '':
+        return render_template('lab4/div.html', error = 'Оба поля должны быть заполнены!')
+
+    x1 = int(x1)
+    x2 = int(x2)
+    result = x1 - x2
+
+    return render_template('lab4/sub.html', x1=x1, x2=x2, result=result)
+
+
+
+@lab4.route('/lab4/add-form')
+def add_form():
+    return render_template('lab4/add-form.html')
+
+@lab4.route('/lab4/add', methods=['POST'])
+def add():
+    x1 = request.form.get('x1')
+    x2 = request.form.get('x2')
+
+    # Если поле пустое — считаю как 0
+    if x1 == '':
+        x1 = 0
+    if x2 == '':
+        x2 = 0
+
+    x1 = int(x1)
+    x2 = int(x2)
+    result = x1 + x2
+
+    return render_template('lab4/add.html', x1=x1, x2=x2, result=result)
+
+
+
+@lab4.route('/lab4/mul-form')
+def mul_form():
+    return render_template('lab4/mul-form.html')
+
+@lab4.route('/lab4/mul', methods=['POST'])
+def mul():
+    x1 = request.form.get('x1')
+    x2 = request.form.get('x2')
+
+    # Если пустое поле — подставляю 1
+    if x1 == '':
+        x1 = 1
+    if x2 == '':
+        x2 = 1
+
+    x1 = int(x1)
+    x2 = int(x2)
+    result = x1 * x2
+
+    return render_template('lab4/mul.html', x1=x1, x2=x2, result=result)
+
+
+@lab4.route('/lab4/pow-form')
+def pow_form():
+    return render_template('lab4/pow-form.html')
+
+@lab4.route('/lab4/pow', methods=['POST'])
+def pow_func():
+    x1 = request.form.get('x1')
+    x2 = request.form.get('x2')
+
+    if x1 == '' or x2 == '':
+        return render_template('lab4/pow.html', error='Оба поля должны быть заполнены!')
+
+    x1 = int(x1)
+    x2 = int(x2)
+
+    if x1 == 0 and x2 == 0:
+        return render_template('lab4/pow.html', error='0 в степени 0 не имеет смысла!')
+
+    result = x1 ** x2
+    return render_template('lab4/pow.html', x1=x1, x2=x2, result=result)
