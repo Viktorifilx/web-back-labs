@@ -3,30 +3,22 @@
 {% block lab %}Лабораторная работа 4{% endblock %}
 
 {% block main %}
+
     {% if authorized %}
-        <h1>Добро пожаловать, {{ login }}!</h1>
-        <div>
-            <form action="/lab4/logout" method="post">
-                <button>Выход</button>
-            </form>
-        </div>
+        {% if gender == 'мужской' %}
+            <h1>Добро пожаловать, уважаемый {{ name }}!</h1>
+        {% else %}
+            <h1>Добро пожаловать, уважаемая {{ name }}!</h1>
+        {% endif %}
+        <form action="/lab4/logout" method="post"><button type="submit">Выход</button></form>
     {% else %}
         <h1>Вход</h1>
-        <h2>Пожалуйста, авторизуйтесь</h2>
         <form method="post">
-            <div>
-                <label for="login">Пользователь:</label>
-                <input type="text" id="login" name="login">
-            </div>
-            <div>
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password">
-            </div>
-            <div>{{ error }}</div>
-            <div>
-                <button type="submit">Войти</button>
-                <button type="reset">Отмена</button>
-            </div>
+            <div><label for="login">Логин:</label> <input type="text" id="login" name="login" value="{{ login_value }}"></div>
+            <div><label for="password">Пароль:</label> <input type="password" id="password" name="password"></div>
+            {% if error %}<p style="color:red; font-weight:bold;">{{ error }}</p>{% endif %}
+            <div style="margin-top:10px;"><button type="submit">Войти</button> <button type="reset">Очистить</button></div>
         </form>
     {% endif %}
+    
 {% endblock %}
