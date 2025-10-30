@@ -236,3 +236,91 @@ def grain():
         discount_text = f'применена скидка за большой объём: 10% ({int(discount)} руб.)'
 
     return render_template('lab4/grain.html', message='Заказ успешно сформирован.', grain=grain_type, weight=weight, total=int(total), discount_text=discount_text)
+
+
+@lab4.route('/lab4/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('lab4/register.html')
+
+    name = request.form.get('name')
+    login = request.form.get('login')
+    password = request.form.get('password')
+    confirm = request.form.get('confirm')
+    gender = request.form.get('gender')
+
+    if name == '' or login == '' or password == '' or confirm == '' or gender == '':
+        return render_template('lab4/register.html', error='все поля должны быть заполнены')
+
+    if password != confirm:
+        return render_template('lab4/register.html', error='пароли не совпадают')
+
+    for u in users:
+        if u['login'] == login:
+            return render_template('lab4/register.html', error='пользователь с таким логином уже существует')
+
+    users.append({'login': login, 'password': password, 'name': name, 'gender': gender})
+    return render_template('lab4/register.html', message='Регистрация прошла успешно')
+
+
+@lab4.route('/lab4/users')
+def users_list():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+    return render_template('lab4/users.html', users=users, current=session['login'])
+
+
+@lab4.route('/lab4/users/delete', methods=['POST'])
+def delete_me():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    login = session['login']
+
+    for i in range(len(users)):
+        if users[i]['login'] == login:
+            users.pop(i)
+            break
+
+    session.pop('login', None); session.pop('name', None); session.pop('gender', None)
+    return redirect('/lab4/login')
+
+@lab4.route('/lab4/users/edit', methods=['GET', 'POST'])
+def edit_me():
+    if 'login' not in session:
+        return redirect('/lab4/login')
+
+    current_login = session['login']
+
+    for u in users:
+        if u['login'] == current_login:
+            current_user = u
+            break
+
+    if request.method == 'GET':
+        return render_template('lab4/edit_user.html', user=current_user)
+
+    new_login = request.form.get('login')
+    new_password = request.form.get('password')
+    new_confirm = request.form.get('confirm')
+
+    if new_name == '' or new_login == '':
+        return render_template('lab4/edit_user.html', user=current_user, error='имя и логин не могут быть пустыми')
+
+    if new_password == '' and new_confirm == '':
+        current_user['name'] = new_name
+        current_user['login'] = new_login
+        session['name'] = new_name
+        session['login'] = new_login
+        return redirect('/lab4/users')
+
+    if new_password != new_confirm:
+        return render_template('lab4/edit_user.html', user=current_user, error='пароль и подтверждение не совпадают')
+
+    current_user['name'] = new_name
+    current_user['login'] = new_login
+    current_user['password'] = new_password
+    session['name'] = new_name
+    session['login'] = new_login
+
+    return redirect('/lab4/users')
