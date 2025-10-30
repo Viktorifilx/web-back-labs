@@ -10,10 +10,17 @@
     <div><label>Логин:</label> <input type="text" name="login" value="{{ user.login }}"></div>
     <div><label>Новый пароль:</label> <input type="password" name="password"></div>
     <div><label>Подтверждение пароля:</label> <input type="password" name="confirm"></div>
-    <div style="margin-top:8px;"><button type="submit">Сохранить</button></div>
+    <p style="font-size:12px; color:#666;">Если оставить пароль пустым, он не изменится.</p>
+    <div style="margin-top:8px;">
+        <button type="submit">Сохранить</button>
+    </div>
 </form>
 
 {% if error %}
-    <p style="color:red; font-weight:bold; margin-top:10px;">{{ error }}</p>
+<p style="color:red; font-weight:bold; margin-top:10px;">{{ error }}</p>
 {% endif %}
+
+<div style="margin-top:20px;">
+    <a href="/lab4/users">← К списку пользователей</a>
+</div>
 {% endblock %}

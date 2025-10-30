@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block lab %}Лабораторная работа 4{% endblock %}
-
 {% block main %}
 <h1>Регистрация пользователя</h1>
 
@@ -18,14 +16,20 @@
             <option value="женский">женский</option>
         </select>
     </div>
-    <div style="margin-top:8px;"><button type="submit">Зарегистрироваться</button></div>
+    <div style="margin-top:8px;">
+        <button type="submit">Зарегистрироваться</button>
+    </div>
 </form>
 
 {% if error %}
-    <p style="color:red; font-weight:bold; margin-top:10px;">{{ error }}</p>
+<p style="color:red; font-weight:bold; margin-top:10px;">{{ error }}</p>
+{% endif %}
+{% if message %}
+<p style="color:green; font-weight:bold; margin-top:10px;">{{ message }}</p>
 {% endif %}
 
-{% if message %}
-    <p style="color:green; font-weight:bold; margin-top:10px;">{{ message }}</p>
-{% endif %}
+<div style="margin-top:20px;">
+    <a href="/lab4/login">Авторизация</a> |
+    <a href="/lab4/">На главную</a>
+</div>
 {% endblock %}

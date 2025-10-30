@@ -4,21 +4,42 @@
 
 {% block main %}
 
-    {% if authorized %}
-        {% if gender == 'мужской' %}
-            <h1>Добро пожаловать, уважаемый {{ name }}!</h1>
-        {% else %}
-            <h1>Добро пожаловать, уважаемая {{ name }}!</h1>
-        {% endif %}
-        <form action="/lab4/logout" method="post"><button type="submit">Выход</button></form>
+{% if authorized %}
+    {% if gender == 'мужской' %}
+        <h1>Добро пожаловать, уважаемый {{ name }}!</h1>
     {% else %}
-        <h1>Вход</h1>
-        <form method="post">
-            <div><label for="login">Логин:</label> <input type="text" id="login" name="login" value="{{ login_value }}"></div>
-            <div><label for="password">Пароль:</label> <input type="password" id="password" name="password"></div>
-            {% if error %}<p style="color:red; font-weight:bold;">{{ error }}</p>{% endif %}
-            <div style="margin-top:10px;"><button type="submit">Войти</button> <button type="reset">Очистить</button></div>
-        </form>
+        <h1>Добро пожаловать, уважаемая {{ name }}!</h1>
     {% endif %}
-    
+    {% if deleted %}
+        <p style="color:green; font-weight:bold;">Ваш аккаунт был удалён.</p>
+    {% endif %}
+    <form action="/lab4/logout" method="post">
+        <button type="submit">Выход</button>
+    </form>
+    <p style="margin-top:10px;"><a href="/lab4/users">Список пользователей</a></p>
+{% else %}
+    <h1>Вход</h1>
+    {% if deleted %}
+        <p style="color:green; font-weight:bold;">Ваш аккаунт удалён. Можете зарегистрироваться снова.</p>
+    {% endif %}
+    <form method="post">
+        <div>
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" value="{{ login_value }}">
+        </div>
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password">
+        </div>
+        {% if error %}
+            <p style="color:red; font-weight:bold; margin-top:10px;">{{ error }}</p>
+        {% endif %}
+        <div style="margin-top:10px;">
+            <button type="submit">Войти</button>
+            <button type="reset">Очистить</button>
+        </div>
+    </form>
+    <p style="margin-top:10px;">Нет аккаунта? <a href="/lab4/register">Регистрация</a></p>
+{% endif %}
+
 {% endblock %}
