@@ -54,12 +54,6 @@ def register():
     return render_template('lab5/success.html', login=login)
 
 
-   
-
-@lab5.route('/lab5/list')
-def article_list():
-    return render_template('lab5/list.html')
-
 
 @lab5.route('/lab5/success')
 def success():
@@ -109,18 +103,15 @@ def create():
 
     conn, cur = db_connect()
 
-    # ищем пользователя по логину
     cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
     row = cur.fetchone()
 
-    # если такого пользователя нет в БД – отправляем на логин
     if row is None:
         db_close(conn, cur)
         return redirect('/lab5/login')
 
     login_id = row["id"]
 
-    # записываем статью в таблицу articles
     cur.execute(
         "INSERT INTO articles (login_id, title, article_text) "
         "VALUES (%s, %s, %s);",
@@ -129,3 +120,20 @@ def create():
 
     db_close(conn, cur)
     return redirect('/lab5')
+
+@lab5.route('/lab5/list')
+def list():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    conn, cur = db_connect()
+
+    cur.execute(f"SELECT id FROM users WHERE login = '{login}';")
+    login_id = cur.fetchone()["id"]
+
+    cur.execute(f"SELECT * FROM articles WHERE login_id='{login_id}';")
+    articles = cur.fetchall()
+
+    db_close(conn, cur)
+    return render_template('/lab5/articles.html', articles=articles)
