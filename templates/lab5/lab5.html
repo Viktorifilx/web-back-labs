@@ -12,7 +12,14 @@
     <a href="/lab5/create" style="background:white; padding:6px 12px; border:1px solid #bcd;">Создать статью</a>
     <a href="/lab5/login" style="background:white; padding:6px 12px; border:1px solid #bcd;">Войти</a>
     <a href="/lab5/register" style="background:white; padding:6px 12px; border:1px solid #bcd;">Регистрация</a>
-    <span style="margin-left:auto; font-weight:bold;">{{ username }}</span>
+
+    <span style="margin-left:auto; font-weight:bold;">
+        {% if username %}
+            {{ username }}
+        {% else %}
+            Anonymous
+        {% endif %}
+    </span>
 </div>
 
 <p style="margin-top:15px;">Это главная страница лабораторной №5.</p>

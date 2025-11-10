@@ -5,12 +5,8 @@ from psycopg2.extras import RealDictCursor
 lab5 = Blueprint('lab5', __name__)
 
 @lab5.route('/lab5/')
-def index():
-    return render_template('lab5/lab5.html', username='anonymous')
-
-@lab5.route('/lab5/login')
-def login():
-    return render_template('lab5/login.html')
+def lab():
+    return render_template('lab5/lab5.html', username = session.get('login'))
 
 @lab5.route('/lab5/register', methods=['GET', 'POST'])
 def register():
@@ -56,3 +52,49 @@ def create_article():
 @lab5.route('/lab5/success')
 def success():
     return render_template('lab5/success.html')
+
+@lab5.route('/lab5/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('lab5/login.html')
+
+    login_value = request.form.get('login')
+    password = request.form.get('password')
+
+    # оба поля должны быть заполнены
+    if not (login_value and password):
+        return render_template('lab5/login.html', error="Заполните поля")
+
+    conn = psycopg2.connect(
+        host='127.0.0.1',
+        database='filatova_viktoriya_knowledge_base',   # та же БД, что в register
+        user='filatova_viktoriya_knowledge_base',        # или postgres, если так делала
+        password='123'
+    )
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    # безопасный запрос без f-строки
+    cur.execute("SELECT * FROM users WHERE login = %s;", (login_value,))
+    user = cur.fetchone()
+
+    # пользователя нет
+    if not user:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html',
+                               error='Логин и/или пароль неверны')
+
+    # пароль не совпал
+    if user["password"] != password:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html',
+                               error='Логин и/или пароль неверны')
+
+    # успех: сохраняем логин в сессии
+    session['login'] = login_value
+
+    cur.close()
+    conn.close()
+    return render_template('lab5/success_login.html', login=login_value)
+
