@@ -8,18 +8,18 @@ lab5 = Blueprint('lab5', __name__)
 
 @lab5.route('/lab5/')
 def lab():
-    return render_template('lab5/lab5.html', username = session.get('login'))
+    return render_template('lab5/lab5.html', username=session.get('login'))
+
 
 def db_connect():
     conn = psycopg2.connect(
-        host = '127.0.0.1',
-        database = 'filatova_viktoriya_knowledge_base',
-        user = 'filatova_viktoriya_knowledge_base',
-        password = '123'
+        host='127.0.0.1',
+        database='filatova_viktoriya_knowledge_base',
+        user='filatova_viktoriya_knowledge_base',
+        password='123'
     )
-    cur = conn.cursor(cursor_factory = RealDictCursor)
+    cur = conn.cursor(cursor_factory=RealDictCursor)
     return conn, cur
-
 
 
 def db_close(conn, cur):
@@ -41,23 +41,26 @@ def register():
 
     conn, cur = db_connect()
 
-    cur.execute(f"SELECT * FROM users WHERE login='{login}';")
+    cur.execute("SELECT * FROM users WHERE login=%s;", (login,))
     if cur.fetchone():
         db_close(conn, cur)
         return render_template('lab5/register.html', error="Такой пользователь уже существует")
 
     password_hash = generate_password_hash(password)
 
-    cur.execute(f"INSERT INTO users (login, password) VALUES ('{login}', '{password_hash}');")
+    cur.execute(
+        "INSERT INTO users (login, password) VALUES (%s, %s);",
+        (login, password_hash)
+    )
 
     db_close(conn, cur)
     return render_template('lab5/success.html', login=login)
 
 
-
 @lab5.route('/lab5/success')
 def success():
     return render_template('lab5/success.html')
+
 
 @lab5.route('/lab5/login', methods=['GET', 'POST'])
 def login():
@@ -72,7 +75,7 @@ def login():
 
     conn, cur = db_connect()
 
-    cur.execute(f"SELECT * FROM users WHERE login='{login_value}';")
+    cur.execute("SELECT * FROM users WHERE login=%s;", (login_value,))
     user = cur.fetchone()
 
     if not user:
@@ -121,6 +124,7 @@ def create():
     db_close(conn, cur)
     return redirect('/lab5')
 
+
 @lab5.route('/lab5/list')
 def list():
     login = session.get('login')
@@ -129,11 +133,16 @@ def list():
 
     conn, cur = db_connect()
 
-    cur.execute(f"SELECT id FROM users WHERE login = '{login}';")
-    login_id = cur.fetchone()["id"]
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    row = cur.fetchone()
+    if row is None:
+        db_close(conn, cur)
+        return redirect('/lab5/login')
 
-    cur.execute(f"SELECT * FROM articles WHERE login_id='{login_id}';")
+    login_id = row["id"]
+
+    cur.execute("SELECT * FROM articles WHERE login_id=%s;", (login_id,))
     articles = cur.fetchall()
 
     db_close(conn, cur)
-    return render_template('/lab5/articles.html', articles=articles)
+    return render_template('lab5/articles.html', articles=articles)
