@@ -60,9 +60,6 @@ def register():
 def article_list():
     return render_template('lab5/list.html')
 
-@lab5.route('/lab5/create')
-def create_article():
-    return render_template('lab5/create.html')
 
 @lab5.route('/lab5/success')
 def success():
@@ -96,3 +93,39 @@ def login():
 
     db_close(conn, cur)
     return render_template('lab5/success_login.html', login=login_value)
+
+
+@lab5.route('/lab5/create', methods=['GET', 'POST'])
+def create():
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    if request.method == 'GET':
+        return render_template('lab5/create_article.html')
+
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    conn, cur = db_connect()
+
+    # ищем пользователя по логину
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
+    row = cur.fetchone()
+
+    # если такого пользователя нет в БД – отправляем на логин
+    if row is None:
+        db_close(conn, cur)
+        return redirect('/lab5/login')
+
+    login_id = row["id"]
+
+    # записываем статью в таблицу articles
+    cur.execute(
+        "INSERT INTO articles (login_id, title, article_text) "
+        "VALUES (%s, %s, %s);",
+        (login_id, title, article_text)
+    )
+
+    db_close(conn, cur)
+    return redirect('/lab5')
