@@ -1,13 +1,11 @@
-from flask import Flask, url_for, request, redirect, abort, render_template
+from flask import Flask, render_template, request, url_for
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
 from lab4 import lab4
 from lab5 import lab5
-import datetime
 
 app = Flask(__name__)
-
 app.secret_key = 'секретно-секретный секрет'
 
 app.register_blueprint(lab1)
@@ -16,40 +14,20 @@ app.register_blueprint(lab3)
 app.register_blueprint(lab4)
 app.register_blueprint(lab5)
 
-@app.errorhandler(404)
-def not_found(err):
-    return "нет такой страницы", 404
-
 @app.route("/")
 @app.route("/index")
 def index():
-    name = "Филатова Виктория Михайловна"
-    group = "ФБИ-34"
-    course = "3 курс"
-    year = "2025"
+    # теперь можно снова отдавать шаблон
+    return render_template(
+        "index.html",
+        name="Филатова Виктория Михайловна",
+        group="ФБИ-34",
+        course="3 курс",
+        year="2025"
+    )
 
-    return """<!doctype html>
-<html>
-    <head>
-        <title>НГТУ, ФБ, Лабораторные работы</title>
-    </head>
-    <body>
-        <header>
-            <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="/lab1">Первая лабораторная</a></li>
-                <li><a href="/lab2/">Вторая лабораторная</a></li>
-                <li><a href="/lab3/">Третья лабораторная</a></li>
-                <li><a href="/lab4/">Четвертая лабораторная</a></li>
-            </ul>
-        </nav>
-        <footer>
-            <p>""" + name + """, """ + group + """, """ + course + """, """ + year + """</p>
-        </footer>
-    </body>
-</html>"""
+
+
 
 @app.route("/bad_request")
 def bad_request():
@@ -198,3 +176,6 @@ def internal_error(err):
         <p><a href="/">Вернуться на главную</a></p>
     </body>
 </html>""", 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
