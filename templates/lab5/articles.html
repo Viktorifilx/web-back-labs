@@ -3,11 +3,70 @@
 {% block lab %}Лабораторная работа 5{% endblock %}
 
 {% block main %}
-<h1>Статьи</h1>
+<h1>Ваши статьи</h1>
 
-{% for article in articles %}
-    <h2>{{ article['title'] }}</h2>
-    <blockquote>{{ article['article_text'] }}</blockquote>
-{% endfor %}
+{% if message %}
+    <p style="color: gray; font-style: italic;">{{ message }}</p>
+{% elif articles %}
+    {% for article in articles %}
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+            <h2>
+                {% if article['is_favorite'] %}
+                    ★
+                {% endif %}
+                {{ article['title'] }}
+                {% if article['is_public'] %}
+                    <span style="font-size: 12px; color: green; margin-left: 8px;">
+                        (публичная)
+                    </span>
+                {% endif %}
+            </h2>
+
+            <blockquote>{{ article['article_text'] }}</blockquote>
+
+            <a href="/lab5/edit/{{ article['id'] }}">Редактировать</a>
+
+            <form action="/lab5/delete/{{ article['id'] }}" method="post"
+                  style="display:inline; margin-left: 10px;"
+                  onsubmit="return confirm('Удалить эту статью?');">
+                <button type="submit">Удалить</button>
+            </form>
+
+            <form action="/lab5/toggle_favorite/{{ article['id'] }}" method="post"
+                  style="display:inline; margin-left: 10px;">
+                <button type="submit">
+                    {% if article['is_favorite'] %}
+                        Убрать из любимых
+                    {% else %}
+                        В любимые
+                    {% endif %}
+                </button>
+            </form>
+
+            <form action="/lab5/toggle_public/{{ article['id'] }}" method="post"
+                  style="display:inline; margin-left: 10px;">
+                <button type="submit">
+                    {% if article['is_public'] %}
+                        Сделать приватной
+                    {% else %}
+                        Сделать публичной
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    {% endfor %}
+{% else %}
+    <p style="color: gray; font-style: italic;">У вас пока нет ни одной статьи.</p>
+{% endif %}
+
+<p style="margin-top:20px;">
+    <a href="/lab5"
+       style="text-decoration:none;
+              color:blue;
+              font-weight:bold;">
+        ← На главную
+    </a>
+</p>
+
 
 {% endblock %}

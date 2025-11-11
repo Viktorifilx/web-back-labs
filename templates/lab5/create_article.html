@@ -5,6 +5,12 @@
 {% block main %}
 <h1>Создание статьи</h1>
 
+{% if error %}
+    <p style="color: red; font-weight: bold;">
+        {{ error }}
+    </p>
+{% endif %}
+
 <form method="post">
     <div>
         <label>
@@ -21,4 +27,14 @@
         <button type="submit">Готово</button>
     </div>
 </form>
+
+<p style="margin-top:20px;">
+    <a href="/lab5"
+       style="text-decoration:none;
+              color:blue;
+              font-weight:bold;">
+        ← На главную
+    </a>
+</p>
+
 {% endblock %}

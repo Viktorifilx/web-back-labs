@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block lab %}Лабораторная работа 5{% endblock %}
+
 {% block main %}
 <div style="background:#dcdcdc; padding:8px 12px; font-size:14px;">
     WEB-программирование, часть 2. Лабораторная работа 5
@@ -7,19 +8,73 @@
 
 <h1 style="margin-top:15px;">База знаний</h1>
 
-<div style="display:flex; gap:10px; background:#e4f4ff; padding:10px;">
-    <a href="/lab5/list" style="background:white; padding:6px 12px; border:1px solid #bcd;">Список статей</a>
-    <a href="/lab5/create" style="background:white; padding:6px 12px; border:1px solid #bcd;">Создать статью</a>
-    <a href="/lab5/login" style="background:white; padding:6px 12px; border:1px solid #bcd;">Войти</a>
-    <a href="/lab5/register" style="background:white; padding:6px 12px; border:1px solid #bcd;">Регистрация</a>
+<div style="display:flex;
+            gap:10px;
+            background:#e4f4ff;
+            padding:10px;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            border:1px solid #bcd;
+            border-radius:4px;">
 
-    <span style="margin-left:auto; font-weight:bold;">
+    <!-- левая часть: кнопки -->
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="/lab5/list"
+           style="background:white; padding:6px 12px; border:1px solid #bcd;">
+            Список статей
+        </a>
+
+        <a href="/lab5/create"
+           style="background:white; padding:6px 12px; border:1px solid #bcd;">
+            Создать статью
+        </a>
+
+        {% if username %}
+            <!-- если пользователь вошёл -->
+            <a href="/lab5/profile"
+               style="background:white; padding:6px 12px; border:1px solid #bcd;">
+                Профиль
+            </a>
+
+            <a href="/lab5/logout"
+               style="background:#ffe6e6; padding:6px 12px; border:1px solid #f99; color:#a00;">
+                Выйти
+            </a>
+        {% else %}
+            <!-- если пользователь не вошёл -->
+            <a href="/lab5/login"
+               style="background:white; padding:6px 12px; border:1px solid #bcd;">
+                Войти
+            </a>
+
+            <a href="/lab5/register"
+               style="background:white; padding:6px 12px; border:1px solid #bcd;">
+                Регистрация
+            </a>
+        {% endif %}
+
+        <!-- доступен всем -->
+        <a href="/lab5/users"
+           style="background:white; padding:6px 12px; border:1px solid #bcd;">
+            Пользователи
+        </a>
+    </div>
+
+        <a href="/lab5/public"
+            style="background:white; padding:6px 12px; border:1px solid #bcd;">
+            Публичные статьи
+        </a>
+
+
+    <!-- правая часть: имя / Anonymous -->
+    <div style="font-weight:bold; color:#7c3aed;">
         {% if username %}
             {{ username }}
         {% else %}
             Anonymous
         {% endif %}
-    </span>
+    </div>
 </div>
 
 <p style="margin-top:15px;">Это главная страница лабораторной №5.</p>

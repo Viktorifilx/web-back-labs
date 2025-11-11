@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+<h1>Публичные статьи пользователей</h1>
+
+{% if articles %}
+    {% for article in articles %}
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+            <h2>{{ article['title'] }}</h2>
+            <blockquote>{{ article['article_text'] }}</blockquote>
+            <p style="font-size: 13px; color: gray;">Автор: {{ article['login'] }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p style="color: gray; font-style: italic;">Нет публичных статей.</p>
+{% endif %}
+
+<p>
+    <a href="/lab5" style="text-decoration:none; color:blue;">← На главную</a>
+</p>
+
+<p style="margin-top:20px;">
+    <a href="/lab5"
+       style="text-decoration:none;
+              color:blue;
+              font-weight:bold;">
+        ← На главную
+    </a>
+</p>
+
+
+{% endblock %}
