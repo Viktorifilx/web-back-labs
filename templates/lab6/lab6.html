@@ -6,6 +6,7 @@
 <h1>Список кабинетов</h1>
 
 <ul id="office-list"></ul>
+<p id="total-price" style="margin-top: 20px; font-weight: bold;"></p>
 {% endblock %}
 
 {% block script %}
@@ -23,10 +24,10 @@ function getOfficeList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
+    .then(function (response) {
         return response.json();
     })
-    .then(function(data) {
+    .then(function (data) {
         const office_list = data.result;
         const ul = document.getElementById('office-list');
         ul.innerHTML = '';
@@ -36,21 +37,37 @@ function getOfficeList() {
 
             const li = document.createElement('li');
             const status = office.tenant ? ('занят (' + office.tenant + ')') : 'свободен';
-            li.innerText = office.number + ': ' + status + ' ';
+            li.innerText = office.number + ': ' + status + ', цена: ' + office.price + ' ₽ ';
 
+            // кнопка "зарезервировать"
             const bookingButton = document.createElement('button');
             bookingButton.innerText = 'зaрезервировать';
-            bookingButton.onclick = function() { booking(office.number); };
+            bookingButton.onclick = function () {
+                booking(office.number);
+            };
             li.appendChild(bookingButton);
 
+            // кнопка "освободить"
             const cancelButton = document.createElement('button');
             cancelButton.innerText = 'освободить';
             cancelButton.style.marginLeft = '8px';
-            cancelButton.onclick = function() { cancellation(office.number); };
+            cancelButton.onclick = function () {
+                cancellation(office.number);
+            };
             li.appendChild(cancelButton);
 
             ul.appendChild(li);
         }
+
+        // Считаем общую стоимость аренды
+        let total = 0;
+        for (let i = 0; i < office_list.length; i++) {
+            if (office_list[i].tenant) {
+                total += office_list[i].price;
+            }
+        }
+        document.getElementById('total-price').innerText =
+            'Общая стоимость аренды: ' + total + ' ₽';
     });
 }
 
@@ -65,13 +82,13 @@ function booking(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
+    .then(function (response) {
         return response.json();
     })
-    .then(function(data) {
+    .then(function (data) {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
@@ -102,13 +119,13 @@ function cancellation(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
+    .then(function (response) {
         return response.json();
     })
-    .then(function(data) {
+    .then(function (data) {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
@@ -131,6 +148,7 @@ function cancellation(officeNumber) {
     });
 }
 
+// запуск при загрузке страницы
 document.addEventListener('DOMContentLoaded', getOfficeList);
 </script>
 {% endblock %}

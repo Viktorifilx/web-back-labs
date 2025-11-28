@@ -2,10 +2,13 @@ from flask import Blueprint, render_template, request, session
 
 lab6 = Blueprint('lab6', __name__)
 
-# создаём список офисов 1–10, все пока свободны
 offices = []
 for i in range(1, 11):
-    offices.append({'number': i, 'tenant': ''})
+    offices.append({
+        'number': i,
+        'tenant': '',
+        'price': 900 + i * 3
+    })
 
 
 @lab6.route('/lab6/')
