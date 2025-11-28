@@ -14,7 +14,7 @@
 {% block script %}
 <script>
 function getOfficeList() {
-    const url = '/lab6/json-rpc-api/';
+    const url = '/lab6/offices-api/';
     const json = {
         jsonrpc: '2.0',
         method: 'info',
@@ -26,13 +26,13 @@ function getOfficeList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
         const office_list = data.result;
         const ul = document.getElementById('office-list');
         ul.innerHTML = '';
+
+        let total = 0;
 
         for (let i = 0; i < office_list.length; i++) {
             const office = office_list[i];
@@ -40,14 +40,13 @@ function getOfficeList() {
             const li = document.createElement('li');
             li.className = 'lab6-office-item';
 
-            const status = office.tenant
-                ? ('занят (' + office.tenant + ')')
-                : 'свободен';
+            const status = office.tenant ? ('занят (' + office.tenant + ')') : 'свободен';
 
             const infoSpan = document.createElement('span');
             infoSpan.className = 'lab6-office-info';
-            infoSpan.innerText = office.number + ': ' + status +
-                ', цена: ' + office.price + ' ₽ ';
+            infoSpan.textContent =
+                'Кабинет ' + office.number + ': ' + status +
+                ', цена: ' + office.price + ' ₽';
             li.appendChild(infoSpan);
 
             const buttonsBox = document.createElement('span');
@@ -55,34 +54,35 @@ function getOfficeList() {
 
             const bookingButton = document.createElement('button');
             bookingButton.className = 'lab6-btn lab6-btn-primary';
-            bookingButton.innerText = 'зaрезервировать';
-            bookingButton.onclick = function() { booking(office.number); };
+            bookingButton.textContent = 'зарезервировать';
+            bookingButton.onclick = function () {
+                booking(office.number);
+            };
             buttonsBox.appendChild(bookingButton);
 
             const cancelButton = document.createElement('button');
             cancelButton.className = 'lab6-btn lab6-btn-ghost';
-            cancelButton.innerText = 'освободить';
-            cancelButton.onclick = function() { cancellation(office.number); };
+            cancelButton.textContent = 'освободить';
+            cancelButton.onclick = function () {
+                cancellation(office.number);
+            };
             buttonsBox.appendChild(cancelButton);
 
             li.appendChild(buttonsBox);
             ul.appendChild(li);
-        }
 
-        // итоговая стоимость
-        let total = 0;
-        for (let i = 0; i < office_list.length; i++) {
-            if (office_list[i].tenant) {
-                total += office_list[i].price;
+            if (office.tenant) {
+                total += Number(office.price) || 0;
             }
         }
-        document.getElementById('total-price').innerText =
+
+        document.getElementById('total-price').textContent =
             'Общая стоимость аренды: ' + total + ' ₽';
     });
 }
 
 function booking(officeNumber) {
-    const url = '/lab6/json-rpc-api/';
+    const url = '/lab6/offices-api/';
     const json = {
         jsonrpc: '2.0',
         method: 'booking',
@@ -92,13 +92,11 @@ function booking(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
@@ -118,7 +116,7 @@ function booking(officeNumber) {
 }
 
 function cancellation(officeNumber) {
-    const url = '/lab6/json-rpc-api/';
+    const url = '/lab6/offices-api/';
     const json = {
         jsonrpc: '2.0',
         method: 'cancellation',
@@ -128,13 +126,11 @@ function cancellation(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
+    .then(response => response.json())
+    .then(data => {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
