@@ -3,10 +3,12 @@
 {% block lab %}Лабораторная работа 6{% endblock %}
 
 {% block main %}
-<h1>Список кабинетов</h1>
+<h1 class="lab6-title">Список кабинетов</h1>
 
-<ul id="office-list"></ul>
-<p id="total-price" style="margin-top: 20px; font-weight: bold;"></p>
+<div class="lab6-card">
+    <ul id="office-list" class="lab6-office-list"></ul>
+    <p id="total-price" class="lab6-total"></p>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -24,10 +26,10 @@ function getOfficeList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(json)
     })
-    .then(function (response) {
+    .then(function(response) {
         return response.json();
     })
-    .then(function (data) {
+    .then(function(data) {
         const office_list = data.result;
         const ul = document.getElementById('office-list');
         ul.innerHTML = '';
@@ -36,30 +38,38 @@ function getOfficeList() {
             const office = office_list[i];
 
             const li = document.createElement('li');
-            const status = office.tenant ? ('занят (' + office.tenant + ')') : 'свободен';
-            li.innerText = office.number + ': ' + status + ', цена: ' + office.price + ' ₽ ';
+            li.className = 'lab6-office-item';
 
-            // кнопка "зарезервировать"
+            const status = office.tenant
+                ? ('занят (' + office.tenant + ')')
+                : 'свободен';
+
+            const infoSpan = document.createElement('span');
+            infoSpan.className = 'lab6-office-info';
+            infoSpan.innerText = office.number + ': ' + status +
+                ', цена: ' + office.price + ' ₽ ';
+            li.appendChild(infoSpan);
+
+            const buttonsBox = document.createElement('span');
+            buttonsBox.className = 'lab6-buttons';
+
             const bookingButton = document.createElement('button');
+            bookingButton.className = 'lab6-btn lab6-btn-primary';
             bookingButton.innerText = 'зaрезервировать';
-            bookingButton.onclick = function () {
-                booking(office.number);
-            };
-            li.appendChild(bookingButton);
+            bookingButton.onclick = function() { booking(office.number); };
+            buttonsBox.appendChild(bookingButton);
 
-            // кнопка "освободить"
             const cancelButton = document.createElement('button');
+            cancelButton.className = 'lab6-btn lab6-btn-ghost';
             cancelButton.innerText = 'освободить';
-            cancelButton.style.marginLeft = '8px';
-            cancelButton.onclick = function () {
-                cancellation(office.number);
-            };
-            li.appendChild(cancelButton);
+            cancelButton.onclick = function() { cancellation(office.number); };
+            buttonsBox.appendChild(cancelButton);
 
+            li.appendChild(buttonsBox);
             ul.appendChild(li);
         }
 
-        // Считаем общую стоимость аренды
+        // итоговая стоимость
         let total = 0;
         for (let i = 0; i < office_list.length; i++) {
             if (office_list[i].tenant) {
@@ -82,13 +92,13 @@ function booking(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(json)
     })
-    .then(function (response) {
+    .then(function(response) {
         return response.json();
     })
-    .then(function (data) {
+    .then(function(data) {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
@@ -102,7 +112,6 @@ function booking(officeNumber) {
                     break;
             }
         } else {
-            document.getElementById('office-list').innerHTML = '';
             getOfficeList();
         }
     });
@@ -119,13 +128,13 @@ function cancellation(officeNumber) {
 
     fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(json)
     })
-    .then(function (response) {
+    .then(function(response) {
         return response.json();
     })
-    .then(function (data) {
+    .then(function(data) {
         if (data.error) {
             switch (data.error.code) {
                 case 1:
@@ -142,13 +151,11 @@ function cancellation(officeNumber) {
                     break;
             }
         } else {
-            document.getElementById('office-list').innerHTML = '';
             getOfficeList();
         }
     });
 }
 
-// запуск при загрузке страницы
 document.addEventListener('DOMContentLoaded', getOfficeList);
 </script>
 {% endblock %}
