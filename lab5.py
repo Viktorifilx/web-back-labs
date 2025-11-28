@@ -5,7 +5,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 from os import path
 
-
 lab5 = Blueprint('lab5', __name__)
 
 
@@ -45,10 +44,10 @@ def register():
         return render_template('lab5/register.html')
 
     login = request.form.get('login')
-    real_name = request.form.get('real_name')   
+    real_name = request.form.get('real_name')
     password = request.form.get('password')
 
-    if not (login and real_name and password):  
+    if not (login and real_name and password):
         return render_template('lab5/register.html', error='Заполните все поля')
 
     conn, cur = db_connect()
@@ -79,7 +78,6 @@ def register():
     return render_template('lab5/success.html', login=login)
 
 
-
 @lab5.route('/lab5/success')
 def success():
     return render_template('lab5/success.html')
@@ -98,7 +96,6 @@ def login():
 
     conn, cur = db_connect()
 
-  
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT * FROM users WHERE login=%s;", (login_value,))
     else:
@@ -200,7 +197,6 @@ def list():
             "SELECT * FROM articles WHERE login_id=? ORDER BY is_favorite DESC, id DESC;",
             (login_id,)
         )
-
 
     articles = cur.fetchall()
     db_close(conn, cur)
@@ -319,7 +315,6 @@ def delete(article_id):
     return redirect('/lab5/list')
 
 
-
 @lab5.route('/lab5/toggle_favorite/<int:article_id>', methods=['POST'])
 def toggle_favorite(article_id):
     login = session.get('login')
@@ -331,7 +326,10 @@ def toggle_favorite(article_id):
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("UPDATE articles SET is_favorite = NOT is_favorite WHERE id=%s;", (article_id,))
     else:
-        cur.execute("UPDATE articles SET is_favorite = CASE WHEN is_favorite=1 THEN 0 ELSE 1 END WHERE id=?;", (article_id,))
+        cur.execute(
+            "UPDATE articles SET is_favorite = CASE WHEN is_favorite=1 THEN 0 ELSE 1 END WHERE id=?;",
+            (article_id,)
+        )
 
     db_close(conn, cur)
     return redirect('/lab5/list')
@@ -348,21 +346,20 @@ def toggle_public(article_id):
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("UPDATE articles SET is_public = NOT is_public WHERE id=%s;", (article_id,))
     else:
-        cur.execute("UPDATE articles SET is_public = CASE WHEN is_public=1 THEN 0 ELSE 1 END WHERE id=?;", (article_id,))
+        cur.execute(
+            "UPDATE articles SET is_public = CASE WHEN is_public=1 THEN 0 ELSE 1 END WHERE id=?;",
+            (article_id,)
+        )
 
     db_close(conn, cur)
     return redirect('/lab5/list')
-
 
 
 @lab5.route('/lab5/users')
 def users():
     conn, cur = db_connect()
 
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT login, real_name FROM users ORDER BY id;")
-    else:
-        cur.execute("SELECT login, real_name FROM users ORDER BY id;")
+    cur.execute("SELECT login, real_name FROM users ORDER BY id;")
 
     users = cur.fetchall()
     db_close(conn, cur)
@@ -444,13 +441,10 @@ def profile():
     return render_template('lab5/profile_success.html', real_name=real_name)
 
 
-
-
 @lab5.route('/lab5/logout')
 def logout():
     session.pop('login', None)
     return redirect('/lab5/login')
-
 
 
 @lab5.route('/lab5/public')
@@ -474,4 +468,3 @@ def public_articles():
     db_close(conn, cur)
 
     return render_template('lab5/public.html', articles=articles)
-
