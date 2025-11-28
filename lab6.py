@@ -17,13 +17,14 @@ def main():
 def api():
     data = request.json
     id = data['id']
+
     if data['method'] == 'info':
         return {
             'jsonrpc': '2.0',
             'result': offices,
             'id': id
         }
-    
+
     login = session.get('login')
     if not login:
         return {
@@ -39,16 +40,45 @@ def api():
         office_number = data['params']
         for office in offices:
             if office['number'] == office_number:
-                    if office['tenant'] != '':
-                        return {
-                            'jsonrpc': '2.0',
-                            'error': {
-                                'code': 2,
-                                'message': 'Already booked'
-                            },
-                            'id': id
-                        }
+                if office['tenant'] != '':
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 2,
+                            'message': 'Already booked'
+                        },
+                        'id': id
+                    }
                 office['tenant'] = login
+                return {
+                    'jsonrpc': '2.0',
+                    'result': 'success',
+                    'id': id
+                }
+
+    if data['method'] == 'cancellation':
+        office_number = data['params']
+        for office in offices:
+            if office['number'] == office_number:
+                if office['tenant'] == '':
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 3,
+                            'message': 'Not booked'
+                        },
+                        'id': id
+                    }
+                if office['tenant'] != login:
+                    return {
+                        'jsonrpc': '2.0',
+                        'error': {
+                            'code': 4,
+                            'message': 'Forbidden'
+                        },
+                        'id': id
+                    }
+                office['tenant'] = ''
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
