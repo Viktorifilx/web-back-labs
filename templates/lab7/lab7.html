@@ -27,10 +27,11 @@
 {% block main %}
 <h1>Список фильмов</h1>
 
-<table>
+<table class="lab7-table">
     <thead>
         <tr>
-            <th colspan="2">Название</th>
+            <th>Русское название</th>
+            <th>Оригинальное название</th>
             <th>Год</th>
             <th>Действие</th>
         </tr>
@@ -39,15 +40,16 @@
     <tbody id="film-list"></tbody>
 </table>
 
+
 <script>
     fillFilmList();
 </script>
 
 <div>
-    <button onclick="addFilm()">Добавить фильм</button>
+    <button class="film-btn film-btn--primary" onclick="addFilm()">Добавить фильм</button>
 </div>
 
-<div class="modal">
+<div class="modal" style="display: none;">
     <input type="hidden" id="id">
 
     <label>
@@ -69,11 +71,14 @@
     <label>
         Описание:
         <textarea id="description"></textarea>
-        <div id="description-error" class="error-message"></div>
-    </label><br>
+    </label>
+    <div id="description-error"></div>
 
-    <button onclick="sendFilm()">OK</button>
-    <button onclick="cancel()">Отмена</button>
+    <div class="modal-buttons">
+        <button class="film-btn film-btn--primary" onclick="sendFilm()">OK</button>
+        <button class="film-btn film-btn--cancel" onclick="cancel()">Отмена</button>
+    </div>
 </div>
+
 
 {% endblock %}

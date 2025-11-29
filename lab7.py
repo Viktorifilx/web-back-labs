@@ -101,6 +101,12 @@ def validate_film(data):
         errors["description"] = "Описание не должно быть пустым"
     return errors
 
+def normalize_film(data: dict) -> dict:
+    if (not data.get("title")) and data.get("title_ru"):
+        data["title"] = data["title_ru"]
+    return data
+
+
 
 @lab7.route('/lab7/rest-api/films/<int:id>/', methods=['PUT'])
 def put_film(id):
@@ -108,24 +114,21 @@ def put_film(id):
         abort(404)
 
     updated_film = request.get_json()
-    errors = validate_film(updated_film)
-    if errors:
-        return jsonify(errors), 400
+    updated_film = normalize_film(updated_film)
 
     films[id] = updated_film
     return films[id]
 
 
 
-
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
     new_film = request.get_json()
-    errors = validate_film(new_film)
-    if errors:
-        return jsonify(errors), 400
+    new_film = normalize_film(new_film)
 
     films.append(new_film)
     return str(len(films) - 1)
+
+
 
 
