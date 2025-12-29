@@ -174,7 +174,11 @@ def api():
             "id": rpc_id
         }
 
+<<<<<<< HEAD
+    # ---------- 5. Неизвестный метод ----------
+=======
     #  Неизвестный метод 
+>>>>>>> 112ea30 (merge after pull)
     return {
         "jsonrpc": "2.0",
         "error": {
@@ -182,4 +186,8 @@ def api():
             "message": "Method not found"
         },
         "id": rpc_id
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> 112ea30 (merge after pull)

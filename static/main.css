@@ -204,3 +204,223 @@ header a, footer a {
 .price-accent {
     color: inherit !important;
 }
+
+
+/* ====== Лабораторная 6 — список кабинетов ====== */
+
+.lab6-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #c86dd7;
+    margin: 0 0 18px 0;
+    text-align: left;
+}
+
+.lab6-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px 26px 28px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+.lab6-office-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lab6-office-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.9), #ffe6ff);
+    border: 1px solid rgba(200, 109, 215, 0.25);
+    gap: 10px;
+}
+
+.lab6-office-info {
+    font-size: 15px;
+    color: #4b184d;
+}
+
+.lab6-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+/* общая кнопка */
+.lab6-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+
+/* основная — резерв */
+.lab6-btn-primary {
+    background: linear-gradient(135deg, #ff7ac7, #c86dd7);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(200, 109, 215, 0.5);
+}
+
+.lab6-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(200, 109, 215, 0.65);
+}
+
+/* вторичная — освободить */
+.lab6-btn-ghost {
+    background: #fff;
+    color: #c86dd7;
+    border: 1px solid #c86dd7;
+}
+
+.lab6-btn-ghost:hover {
+    background: #ffe6ff;
+}
+
+/* итоговая стоимость */
+.lab6-total {
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #4b184d;
+}
+
+
+/* Таблица со списком фильмов */
+.lab7-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.lab7-table thead {
+    background: #f5e6ff;
+}
+
+.lab7-table th,
+.lab7-table td {
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.lab7-table tbody tr:nth-child(even) {
+    background: #faf5ff;
+}
+
+.lab7-table tbody tr:hover {
+    background: #f1e1ff;
+}
+
+.film-btn {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.film-btn--edit {
+    background: #f3e8ff;
+    color: #5b21b6;
+}
+
+.film-btn--edit:hover {
+    background: #e9d5ff;
+}
+
+.film-btn--delete {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.film-btn--delete:hover {
+    background: #fecaca;
+}
+
+.film-btn--primary {
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+.film-btn--primary:hover {
+    background: #4338ca;
+}
+
+.film-btn--cancel {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.film-btn--cancel:hover {
+    background: #d4d4d8;
+}
+
+/* Модальное окно */
+.modal {
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    width: 420px;
+    padding: 20px 22px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+    border-radius: 16px;
+    z-index: 100;
+}
+
+.modal label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    margin-top: 4px;
+    border-radius: 6px;
+    border: 1px solid #d4d4d8;
+    font-family: inherit;
+}
+
+.modal textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.modal-buttons {
+    margin-top: 12px;
+    text-align: right;
+}
+
+.modal-buttons .film-btn {
+    margin-left: 8px;
+}
+
+#description-error {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #b91c1c;
+}
+
+
+table i {
+    color: #6b7280; 
+    font-size: 13px;
+}

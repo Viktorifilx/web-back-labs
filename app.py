@@ -10,10 +10,11 @@ from lab7 import lab7
 
 app = Flask(__name__)
 
+# секретный ключ и тип базы (postgres/sqlite) берём из переменных окружения, с дефолтами
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 
-
+# регистрируем блюпринты (как было в «upstream»)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
@@ -21,11 +22,14 @@ app.register_blueprint(lab4)
 app.register_blueprint(lab5)
 app.register_blueprint(lab6)
 app.register_blueprint(lab7)
+<<<<<<< HEAD
+
+=======
+>>>>>>> 112ea30 (merge after pull)
 
 @app.route("/")
 @app.route("/index")
 def index():
-    # теперь можно снова отдавать шаблон
     return render_template(
         "index.html",
         name="Филатова Виктория Михайловна",
@@ -35,34 +39,38 @@ def index():
     )
 
 
-
-
 @app.route("/bad_request")
 def bad_request():
     return "400 Bad Request — Неверный запрос", 400
+
 
 @app.route("/unauthorized")
 def unauthorized():
     return "401 Unauthorized — Требуется авторизация", 401
 
+
 @app.route("/payment_required")
 def payment_required():
     return "402 Payment Required — Необходима оплата", 402
+
 
 @app.route("/forbidden")
 def forbidden():
     return "403 Forbidden — Доступ запрещён", 403
 
+
 @app.route("/method_not_allowed")
 def method_not_allowed():
     return "405 Method Not Allowed — Метод не разрешён", 405
+
 
 @app.route("/im_a_teapot")
 def im_a_teapot():
     return "418 I'm a teapot — Я чайник", 418
 
 
-log_404 = []  
+log_404 = []
+
 
 @app.errorhandler(404)
 def not_found(err):
@@ -140,11 +148,11 @@ def not_found(err):
 </html>""", 404
 
 
-
 @app.route("/cause_error")
 def cause_error():
     x = 1 / 0
     return "Это никогда не выполнится"
+
 
 @app.errorhandler(500)
 def internal_error(err):
@@ -184,6 +192,7 @@ def internal_error(err):
         <p><a href="/">Вернуться на главную</a></p>
     </body>
 </html>""", 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)
