@@ -12,6 +12,11 @@ def main():
         return render_template('lab8/lab8.html', username=current_user.login)
     return render_template('lab8/lab8.html', username='Anonymous')
 
+@lab8.route('/lab8/public')
+def public_articles():
+    public_articles_list = articles.query.filter_by(is_public=True).all()
+    return render_template('lab8/public_articles.html', articles=public_articles_list)
+
 
 @lab8.route('/lab8/login', methods=['GET', 'POST'])
 def login():
@@ -35,6 +40,41 @@ def login():
     
     return render_template('lab8/login.html', 
                           error='Ошибка входа: логин и/или пароль неверны')
+
+
+@lab8.route('/lab8/search', methods=['GET', 'POST'])
+def search_articles():
+    if request.method == 'GET':
+        return render_template('lab8/search.html')
+
+    search_query = request.form.get('query', '').strip()
+
+    if not search_query:
+        return render_template('lab8/search.html', error='Введите поисковый запрос')
+
+    # ищем по title ИЛИ по text (скобки важны)
+    pattern = f'%{search_query}%'
+    cond = (articles.title.ilike(pattern)) | (articles.article_text.ilike(pattern))
+
+    if current_user.is_authenticated:
+        # ВАЖНО: убрали login_id != current_user.id
+        # Теперь ищем по публичным + по своим (и публичные свои тоже попадут)
+        all_articles = articles.query.filter(
+            cond,
+            (articles.is_public == True) | (articles.login_id == current_user.id)
+        ).all()
+    else:
+        all_articles = articles.query.filter(
+            articles.is_public == True,
+            cond
+        ).all()
+
+    return render_template(
+        'lab8/search_results.html',
+        articles=all_articles,
+        query=search_query,
+        count=len(all_articles)
+    )
 
 
 @lab8.route('/lab8/register/', methods=['GET', 'POST'])
