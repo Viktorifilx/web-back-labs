@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 6{% endblock %}
+
+{% block main %}
+<h1 class="lab6-title">Список кабинетов</h1>
+
+<div class="lab6-card">
+    <ul id="office-list" class="lab6-office-list"></ul>
+    <p id="total-price" class="lab6-total"></p>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function getOfficeList() {
+    const url = '/lab6/offices-api/';
+    const json = {
+        jsonrpc: '2.0',
+        method: 'info',
+        id: Math.round(Math.random() * 1000)
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(json)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const office_list = data.result;
+        const ul = document.getElementById('office-list');
+        ul.innerHTML = '';
+
+        let total = 0;
+
+        for (let i = 0; i < office_list.length; i++) {
+            const office = office_list[i];
+
+            const li = document.createElement('li');
+            li.className = 'lab6-office-item';
+
+            const status = office.tenant ? ('занят (' + office.tenant + ')') : 'свободен';
+
+            const infoSpan = document.createElement('span');
+            infoSpan.className = 'lab6-office-info';
+            infoSpan.textContent =
+                'Кабинет ' + office.number + ': ' + status +
+                ', цена: ' + office.price + ' ₽';
+            li.appendChild(infoSpan);
+
+            const buttonsBox = document.createElement('span');
+            buttonsBox.className = 'lab6-buttons';
+
+            const bookingButton = document.createElement('button');
+            bookingButton.className = 'lab6-btn lab6-btn-primary';
+            bookingButton.textContent = 'зарезервировать';
+            bookingButton.onclick = function () {
+                booking(office.number);
+            };
+            buttonsBox.appendChild(bookingButton);
+
+            const cancelButton = document.createElement('button');
+            cancelButton.className = 'lab6-btn lab6-btn-ghost';
+            cancelButton.textContent = 'освободить';
+            cancelButton.onclick = function () {
+                cancellation(office.number);
+            };
+            buttonsBox.appendChild(cancelButton);
+
+            li.appendChild(buttonsBox);
+            ul.appendChild(li);
+
+            if (office.tenant) {
+                total += Number(office.price) || 0;
+            }
+        }
+
+        document.getElementById('total-price').textContent =
+            'Общая стоимость аренды: ' + total + ' ₽';
+    });
+}
+
+function booking(officeNumber) {
+    const url = '/lab6/offices-api/';
+    const json = {
+        jsonrpc: '2.0',
+        method: 'booking',
+        id: Math.round(Math.random() * 1000),
+        params: officeNumber
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(json)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            switch (data.error.code) {
+                case 1:
+                    alert('Вы не авторизованы, пожалуйста, авторизуйтесь');
+                    break;
+                case 2:
+                    alert('Офис уже арендуется');
+                    break;
+                case -32601:
+                    alert('Странная ошибка');
+                    break;
+            }
+        } else {
+            getOfficeList();
+        }
+    });
+}
+
+function cancellation(officeNumber) {
+    const url = '/lab6/offices-api/';
+    const json = {
+        jsonrpc: '2.0',
+        method: 'cancellation',
+        id: Math.round(Math.random() * 1000),
+        params: officeNumber
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(json)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            switch (data.error.code) {
+                case 1:
+                    alert('Вы не авторизованы, пожалуйста, авторизуйтесь');
+                    break;
+                case 3:
+                    alert('Офис не арендован');
+                    break;
+                case 4:
+                    alert('Нельзя снять чужую аренду');
+                    break;
+                case -32601:
+                    alert('Странная ошибка');
+                    break;
+            }
+        } else {
+            getOfficeList();
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', getOfficeList);
+</script>
+{% endblock %}
