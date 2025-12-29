@@ -201,8 +201,3 @@ def add_film():
     return str(new_id)
 
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 112ea30 (merge after pull)

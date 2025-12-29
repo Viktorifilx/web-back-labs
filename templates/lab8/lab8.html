@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block script %}
+<style>
+/* контейнер меню */
+.lab8-menu {
+    margin: 20px 0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #eaf6ff;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+/* кнопки-ссылки */
+.lab8-menu a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #ffffff;
+    border: 1px solid #9ec5e5;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #4b0082;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.lab8-menu a:hover {
+    background: #d9ecff;
+    border-color: #6fa8dc;
+    color: #2b0060;
+}
+
+/* пользователь справа */
+.lab8-user {
+    margin-left: auto;
+    font-weight: 600;
+    color: #6a1bb1;
+}
+</style>
+
+{% endblock %}
+
+{% block main %}
+
+<h1>База знаний</h1>
+
+<nav class="lab8-menu">
+    <a href="/lab8/articles">Список статей</a>
+    <a href="/lab8/create">Создать статью</a>
+    <a href="/lab8/login">Войти</a>
+    <a href="/lab8/register">Регистрация</a>
+</nav>
+
+<p class="lab8-user">Пользователь: {{ username }}</p>
+
+{% endblock %}

@@ -7,14 +7,13 @@ from lab4 import lab4
 from lab5 import lab5
 from lab6 import lab6
 from lab7 import lab7
+from lab8 import lab8
 
 app = Flask(__name__)
 
-# секретный ключ и тип базы (postgres/sqlite) берём из переменных окружения, с дефолтами
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 
-# регистрируем блюпринты (как было в «upstream»)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
@@ -22,10 +21,8 @@ app.register_blueprint(lab4)
 app.register_blueprint(lab5)
 app.register_blueprint(lab6)
 app.register_blueprint(lab7)
-<<<<<<< HEAD
+app.register_blueprint(lab8)
 
-=======
->>>>>>> 112ea30 (merge after pull)
 
 @app.route("/")
 @app.route("/index")
@@ -194,5 +191,9 @@ def internal_error(err):
 </html>""", 500
 
 
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+
