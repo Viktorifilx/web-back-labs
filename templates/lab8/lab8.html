@@ -43,20 +43,22 @@
     color: #6a1bb1;
 }
 </style>
-
 {% endblock %}
 
 {% block main %}
-
 <h1>База знаний</h1>
 
 <nav class="lab8-menu">
     <a href="/lab8/articles">Список статей</a>
     <a href="/lab8/create">Создать статью</a>
-    <a href="/lab8/login">Войти</a>
-    <a href="/lab8/register">Регистрация</a>
+    
+    {% if username != 'Anonymous' %}
+        <span class="lab8-user">Пользователь: {{ username }}</span>
+        <a href="/lab8/logout">Выйти</a>
+    {% else %}
+        <a href="/lab8/login">Войти</a>
+        <a href="/lab8/register">Регистрация</a>
+    {% endif %}
 </nav>
-
-<p class="lab8-user">Пользователь: {{ username }}</p>
 
 {% endblock %}
