@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for
 import os
-import path
-from flask_sqlalchemy import SQLAlchemy
+from os import path
+
 from db import db
 from lab1 import lab1
 from lab2 import lab2
@@ -11,6 +11,7 @@ from lab5 import lab5
 from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
+
 
 app = Flask(__name__)
 
